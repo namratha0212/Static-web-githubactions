@@ -1,0 +1,31 @@
+name: deploying githubactions in ec2
+on: 
+  workflow_dispatch:
+
+jobs:
+  aws-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: clon
+        uses: actions/checkout@7.0.0
+
+      - name: copy website files to nginx
+        uses: appleboy/scp-acations@v1
+        with: 
+          host: ${{ secrets.IP_ADD }}
+          username: ${{ secrets.USER_NAM }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "./*"
+          target: "/tmp/website"
+
+      - name: deploy into website
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.IP_ADD }}
+          username: ${{ secrets.USER_NAM }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            sudo cp -r /tmp/website/* /var/www/html
+            sudo systemctl reload nginx
+          
