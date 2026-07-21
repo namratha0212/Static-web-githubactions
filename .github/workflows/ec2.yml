@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: clon
-        uses: actions/checkout@7.0.0
+      - name: cloning sataic repo
+        uses: actions/checkout@v7.0.0
 
       - name: copy website files to nginx
         uses: appleboy/scp-acations@v1
